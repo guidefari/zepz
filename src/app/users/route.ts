@@ -1,10 +1,14 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const params = new URL(req.url)
+  const page = params.searchParams.get('page') || '1'
+  const pagesize = params.searchParams.get('pagesize') || '20'
+  
   const res = await fetch('http://api.stackexchange.com/2.2/users?' + new URLSearchParams({
-    pagesize: '20',
-    page: '2',
+    pagesize,
+    page,
     order: 'desc',
     sort: 'reputation',
     site: 'stackoverflow'
