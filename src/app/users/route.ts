@@ -2,7 +2,13 @@ import { NextResponse } from 'next/server';
 
 
 export async function GET() {
-  const res = await fetch('http://api.stackexchange.com/2.2/users?pagesize=20&order=desc&sort=reputation&site=stackoverflow' );
+  const res = await fetch('http://api.stackexchange.com/2.2/users?' + new URLSearchParams({
+    pagesize: '20',
+    page: '2',
+    order: 'desc',
+    sort: 'reputation',
+    site: 'stackoverflow'
+  }) );
   const stackoverflowUsers: StackAPIResponse = await res.json();
 
   const formattedUsers: FormattedUser[] = stackoverflowUsers?.items?.map(user => {
