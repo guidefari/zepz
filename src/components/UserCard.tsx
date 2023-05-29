@@ -16,7 +16,6 @@ export const UserCard = ({ user }: Props) => {
           alt="blog"
         />
         <div className='absolute cursor-pointer top-3 right-3'>
-
         <Dropdown />
         </div>
       </div>
