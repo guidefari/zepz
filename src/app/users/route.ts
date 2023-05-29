@@ -3,11 +3,22 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   const res = await fetch('http://api.stackexchange.com/2.2/users?pagesize=20&order=desc&sort=reputation&site=stackoverflow' );
-  const data = await res.json();
+  const stackoverflowUsers: StackAPIResponse = await res.json();
+
+  const formattedUsers: FormattedUser[] = stackoverflowUsers?.items?.map(user => {
+    return {
+      user_id: user.user_id,
+      display_name: user.display_name,
+      reputation: user.reputation,
+      profile_image: user.profile_image
+    }
+  })
  
-  return NextResponse.json({ data });
+  return NextResponse.json({ formattedUsers });
 }
 
+
+type FormattedUser = Pick<StackUser, 'user_id' | 'profile_image' | 'display_name' | 'reputation'>
 
 type StackUser = {
   badge_counts: {
@@ -36,7 +47,5 @@ type StackUser = {
 }
 
 type StackAPIResponse = {
-  data: {
     items: StackUser[]
-  }
 }

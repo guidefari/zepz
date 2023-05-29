@@ -2,8 +2,8 @@
 
 - It must compile without errors -  if there are any potential compilation issues highlight them in your documentation.
 - When the app is launched, the user should be able to see a list of the top 20 StackOverflow users.
-- Each list item should contain user's profile image, name and reputation
-If the server is unavailable (e.g. offline), the user should see a list of empty states with an error message.
+- Each list item should contain user's **profile image, name and reputation**
+- If the server is unavailable (e.g. offline), the user should see a list of empty states with an error message.
 - Have cells be expandable (upon tapping the cell), with additional options to 'follow' and 'block' a user
 - Follow/block functionality should just be locally simulated, i.e. no actual API call should be made. The meaning of following and blocking is explained in the points below
 - Users that are followed should show an indicator in the main part of the list item
