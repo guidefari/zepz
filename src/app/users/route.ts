@@ -21,7 +21,9 @@ export async function GET(req: NextRequest) {
         user_id: user.user_id,
         display_name: user.display_name,
         reputation: user.reputation,
-        profile_image: user.profile_image
+        profile_image: user.profile_image,
+        following: false,
+        blocked: false
       }
     })
     return NextResponse.json( formattedUsers );
@@ -33,7 +35,10 @@ export async function GET(req: NextRequest) {
 }
 
 
-export type FormattedUser = Pick<StackUser, 'user_id' | 'profile_image' | 'display_name' | 'reputation'>
+export type FormattedUser = Pick<StackUser, 'user_id' | 'profile_image' | 'display_name' | 'reputation'> & {
+  following: boolean
+  blocked: boolean
+}
 
 type StackUser = {
   badge_counts: {
