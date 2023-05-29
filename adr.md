@@ -1,0 +1,1 @@
+- decided to use `users/route.ts` so I can keep the FE & BE layer separate. that file can be deployed in any node env, making it reusable in an env with web, & native mobile
