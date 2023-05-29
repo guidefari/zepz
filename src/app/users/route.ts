@@ -1,41 +1,46 @@
-import { NextResponse, NextRequest } from 'next/server';
-
+import { NextResponse, NextRequest } from 'next/server'
 
 export async function GET(req: NextRequest) {
   const params = new URL(req.url)
   const page = params.searchParams.get('page') || '1'
   const pagesize = params.searchParams.get('pagesize') || '20'
+
+  const url =
+  'http://api.stackexchange.com/2.2/users?' +
+  new URLSearchParams({
+    pagesize,
+    page,
+    order: 'desc',
+    sort: 'reputation',
+    site: 'stackoverflow',
+  })
+  console.log('url:', url)
   
   try {
-    const res = await fetch('http://api.stackexchange.com/2.2/users?' + new URLSearchParams({
-      pagesize,
-      page,
-      order: 'desc',
-      sort: 'reputation',
-      site: 'stackoverflow'
-    }) );
-    const stackoverflowUsers: StackAPIResponse = await res.json();
-  
-    const formattedUsers: FormattedUser[] = stackoverflowUsers?.items?.map(user => {
+    const res = await fetch(url)
+    const stackoverflowUsers: StackAPIResponse = await res.json()
+
+    const formattedUsers: FormattedUser[] = stackoverflowUsers?.items?.map((user) => {
       return {
         user_id: user.user_id,
         display_name: user.display_name,
         reputation: user.reputation,
         profile_image: user.profile_image,
         following: false,
-        blocked: false
+        blocked: false,
       }
     })
-    return NextResponse.json( formattedUsers );
+    return NextResponse.json(formattedUsers)
   } catch (error) {
-    console.error(error);
-    return NextResponse.json([]);
+    console.error(error)
+    return NextResponse.json([])
   }
-  
 }
 
-
-export type FormattedUser = Pick<StackUser, 'user_id' | 'profile_image' | 'display_name' | 'reputation'> & {
+export type FormattedUser = Pick<
+  StackUser,
+  'user_id' | 'profile_image' | 'display_name' | 'reputation'
+> & {
   following: boolean
   blocked: boolean
 }
@@ -67,5 +72,5 @@ type StackUser = {
 }
 
 type StackAPIResponse = {
-    items: StackUser[]
+  items: StackUser[]
 }

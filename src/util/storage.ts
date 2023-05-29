@@ -15,6 +15,7 @@ export async function read(): Promise<FormattedUser[] | undefined> {
         const data: FormattedUser[] = await fetch('/users').then((res) => res.json())
         db.clear('users');
         data.forEach((user) => db.put('users', user, user.user_id));
+        console.log('db.getAll', db.getAll('users'))
         return db.getAll('users');
     } catch (error) {
         if (await db.count('users') > 0) {
