@@ -6,29 +6,34 @@ export async function GET(req: NextRequest) {
   const page = params.searchParams.get('page') || '1'
   const pagesize = params.searchParams.get('pagesize') || '20'
   
-  const res = await fetch('http://api.stackexchange.com/2.2/users?' + new URLSearchParams({
-    pagesize,
-    page,
-    order: 'desc',
-    sort: 'reputation',
-    site: 'stackoverflow'
-  }) );
-  const stackoverflowUsers: StackAPIResponse = await res.json();
-
-  const formattedUsers: FormattedUser[] = stackoverflowUsers?.items?.map(user => {
-    return {
-      user_id: user.user_id,
-      display_name: user.display_name,
-      reputation: user.reputation,
-      profile_image: user.profile_image
-    }
-  })
- 
-  return NextResponse.json({ formattedUsers });
+  try {
+    const res = await fetch('http://api.stackexchange.com/2.2/users?' + new URLSearchParams({
+      pagesize,
+      page,
+      order: 'desc',
+      sort: 'reputation',
+      site: 'stackoverflow'
+    }) );
+    const stackoverflowUsers: StackAPIResponse = await res.json();
+  
+    const formattedUsers: FormattedUser[] = stackoverflowUsers?.items?.map(user => {
+      return {
+        user_id: user.user_id,
+        display_name: user.display_name,
+        reputation: user.reputation,
+        profile_image: user.profile_image
+      }
+    })
+    return NextResponse.json( formattedUsers );
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json([]);
+  }
+  
 }
 
 
-type FormattedUser = Pick<StackUser, 'user_id' | 'profile_image' | 'display_name' | 'reputation'>
+export type FormattedUser = Pick<StackUser, 'user_id' | 'profile_image' | 'display_name' | 'reputation'>
 
 type StackUser = {
   badge_counts: {
