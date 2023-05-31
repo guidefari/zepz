@@ -1,21 +1,9 @@
 "use client"
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import { FormattedUser } from './users/route'
 import { UserCard } from '@/components/UserCard'
 import store  from '@/util/storage'
+import { observer } from 'mobx-react'
 
-export default function Home() {
-  // const [state] = useState(users)
-  // const [isLoading, setLoading] = useState(false)
-  console.log('store',store)
-  
-  useEffect(() => {
-    store.read()
-  
-  }, [])
-  
-
+export default observer(function Home() {
   // if (isLoading) return <p>Loading...</p>
   // if (!users) return <p>No profile data</p>
 
@@ -28,7 +16,7 @@ export default function Home() {
       </div>
     </main>
   )
-}
+})
 
 type SearchParams = {
   page: number
