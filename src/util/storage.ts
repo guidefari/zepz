@@ -41,8 +41,8 @@ class LocalStorage {
       if (!this.db) return
       const data: FormattedUser[] = await fetch('/users').then((res) => res.json())
       this.db.clear('users')
-      data.forEach((user) => this.db?.put('users', user, user.user_id))
-      return (this.users = await this.db.getAll('users'))
+      data.forEach((user) => this.db?.put('users', user, user.reputation))
+      this.syncStore()
     } catch (error) {
       if (this.db && (await this.db.count('users')) > 0) {
         return await this.db.getAll('users')
@@ -56,35 +56,43 @@ class LocalStorage {
   async toggleUserBlock(id: number) {
     const userToPersist = this.getSingleUserDetailsFromStore(id)
     if (!userToPersist) return
+    
     this.db?.put(
       'users',
       {
         ...userToPersist,
         blocked: !userToPersist?.blocked,
+        following: false,
       },
-      id
+      userToPersist.reputation
     )
 
-    this.users = await this.db?.getAll('users')
+    this.syncStore()
   }
   
   async toggleFollowUser(id: number) {
     const userToPersist = this.getSingleUserDetailsFromStore(id)
     if (!userToPersist) return
+    if (userToPersist?.blocked) return console.log('You cannot follow a blocked user')
     this.db?.put(
       'users',
       {
         ...userToPersist,
         following: !userToPersist?.following,
       },
-      id
+      userToPersist.reputation
       )
-      this.users = await this.db?.getAll('users')
+      this.syncStore()
   }
 
   getSingleUserDetailsFromStore(id: number): FormattedUser | undefined {
     return this.users?.find((user) => user.user_id === id)
   }
+
+  async syncStore() {
+    this.users = (await this?.db?.getAll('users'))?.reverse()
+  }
+
 }
 
 const localStorage = new LocalStorage()
