@@ -53,19 +53,23 @@ class LocalStorage {
     }
   }
 
-  async blockUser(user_id: number) {
-    const userToPersist = this.users?.find((user) => user.user_id === user_id)
-    
+  async toggleUserBlock(id: number) {
+    const userToPersist = this.getSingleUserDetailsFromStore(id)
+    if (!userToPersist) return
     this.db?.put(
       'users',
       {
         ...userToPersist,
-        blocked: true,
+        blocked: !userToPersist?.blocked,
       },
-      user_id
+      id
     )
 
     this.users = await this.db?.getAll('users')
+  }
+
+  getSingleUserDetailsFromStore(id: number): FormattedUser | undefined {
+    return this.users?.find((user) => user.user_id === id)
   }
 }
 
