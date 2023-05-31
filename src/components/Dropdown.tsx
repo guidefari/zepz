@@ -20,8 +20,8 @@ export const Dropdown = observer(({user}: Props) => {
 
     <DropdownMenu.Portal>
       <DropdownMenu.Content className="DropdownMenuContent">
-        <DropdownMenu.Item>
-          <button className='text-black'>follow</button>
+        <DropdownMenu.Item onClick={() => store.toggleFollowUser(user?.user_id)}>
+          <button className='text-black'>{user?.following ? 'unfollow' : 'follow'}</button>
         </DropdownMenu.Item>
         <DropdownMenu.Item onClick={() => store.toggleUserBlock(user?.user_id)}>
           <button className='text-black'>{user?.blocked ? 'unblock' : 'block'}</button>
