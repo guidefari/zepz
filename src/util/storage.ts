@@ -67,6 +67,20 @@ class LocalStorage {
 
     this.users = await this.db?.getAll('users')
   }
+  
+  async toggleFollowUser(id: number) {
+    const userToPersist = this.getSingleUserDetailsFromStore(id)
+    if (!userToPersist) return
+    this.db?.put(
+      'users',
+      {
+        ...userToPersist,
+        following: !userToPersist?.following,
+      },
+      id
+      )
+      this.users = await this.db?.getAll('users')
+  }
 
   getSingleUserDetailsFromStore(id: number): FormattedUser | undefined {
     return this.users?.find((user) => user.user_id === id)
