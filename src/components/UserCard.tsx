@@ -6,6 +6,7 @@ type Props = {
   user: FormattedUser
 }
 
+
 export const UserCard = ({ user }: Props) => {
   return (
     <div className="p-6">
@@ -16,7 +17,7 @@ export const UserCard = ({ user }: Props) => {
           alt="blog"
         />
         <div className='absolute cursor-pointer top-3 right-3'>
-        <Dropdown />
+        <Dropdown userId={user?.user_id}/>
         </div>
       </div>
       <div className="inline-flex justify-between w-full">
@@ -24,6 +25,8 @@ export const UserCard = ({ user }: Props) => {
           {user.display_name}
         </h1>
         <span title='Reputation score'>{new Intl.NumberFormat('en-US').format(user.reputation)}</span>
+        {user.blocked && <span className='text-red-500'>Blocked</span>}
+        {user.following && <span className='text-blue-500'>Following</span>}
       </div>
     </div>
   )
