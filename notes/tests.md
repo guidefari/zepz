@@ -1,0 +1,3 @@
+- test for follow & block cases. assert that error handling is gracious
+  - for example, you shouldn't be able to follow a blocked user
+  - assert that blocking a user also unfollows them
