@@ -1,22 +1,28 @@
-"use client"
+'use client'
 import { FormattedUser } from '@/app/users/route'
-import { openDB } from 'idb'
-import { makeObservable, observable } from "mobx";
+import { IDBPDatabase, openDB } from 'idb'
+import { makeObservable, observable } from 'mobx'
 
 class LocalStorage {
-  users: FormattedUser[] = []
+  users: FormattedUser[] | undefined = []
+  db: IDBPDatabase<unknown> | undefined
 
   constructor() {
     makeObservable(this, {
       users: observable,
-      load: observable,
-      read: observable
-    });
+      loadDB: observable,
+      getUsers: observable,
+    })
 
-    this.read()
+    this.init()
   }
 
-  load() {
+  async init() {
+    this.db = await this.loadDB()
+    this.getUsers()
+  }
+
+  async loadDB() {
     try {
       if (!window) return
 
@@ -30,23 +36,36 @@ class LocalStorage {
     }
   }
 
-  async read(): Promise<FormattedUser[] | void> {
-    const db = await this.load()
-
+  async getUsers(): Promise<FormattedUser[] | void> {
     try {
-      if (!db) return
+      if (!this.db) return
       const data: FormattedUser[] = await fetch('/users').then((res) => res.json())
-      db.clear('users')
-      data.forEach((user) => db.put('users', user, user.user_id))
-      return (this.users = await db.getAll('users'))
+      this.db.clear('users')
+      data.forEach((user) => this.db?.put('users', user, user.user_id))
+      return (this.users = await this.db.getAll('users'))
     } catch (error) {
-      if (db && (await db.count('users')) > 0) {
-        return await db.getAll('users')
+      if (this.db && (await this.db.count('users')) > 0) {
+        return await this.db.getAll('users')
       } else {
         console.log('No data is available')
         console.error(error)
       }
     }
+  }
+
+  async blockUser(user_id: number) {
+    const userToPersist = this.users?.find((user) => user.user_id === user_id)
+    
+    this.db?.put(
+      'users',
+      {
+        ...userToPersist,
+        blocked: true,
+      },
+      user_id
+    )
+
+    this.users = await this.db?.getAll('users')
   }
 }
 
