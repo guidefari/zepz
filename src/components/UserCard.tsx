@@ -17,7 +17,7 @@ export const UserCard = ({ user }: Props) => {
           alt="blog"
         />
         <div className='absolute cursor-pointer top-3 right-3'>
-        <Dropdown userId={user?.user_id}/>
+        <Dropdown user={user}/>
         </div>
       </div>
       <div className="inline-flex justify-between w-full">

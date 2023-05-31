@@ -3,13 +3,14 @@ import './dropdown-styles.css'
 import { ThreeDots } from './icons'
 import store from '@/util/storage'
 import { observer } from 'mobx-react'
+import { FormattedUser } from '@/app/users/route'
 
 type Props = {
-  userId: number
+  user: FormattedUser
 }
 
 
-export const Dropdown = observer(({userId}: Props) => {
+export const Dropdown = observer(({user}: Props) => {
   
   return (
   <DropdownMenu.Root>
@@ -22,8 +23,8 @@ export const Dropdown = observer(({userId}: Props) => {
         <DropdownMenu.Item>
           <button className='text-black'>follow</button>
         </DropdownMenu.Item>
-        <DropdownMenu.Item onClick={() => store.blockUser(userId)}>
-          <button className='text-black'>block</button>
+        <DropdownMenu.Item onClick={() => store.toggleUserBlock(user?.user_id)}>
+          <button className='text-black'>{user?.blocked ? 'unblock' : 'block'}</button>
         </DropdownMenu.Item>
       </DropdownMenu.Content>
     </DropdownMenu.Portal>
