@@ -20,11 +20,11 @@ export const Dropdown = observer(({user}: Props) => {
 
     <DropdownMenu.Portal>
       <DropdownMenu.Content className="DropdownMenuContent">
-        <DropdownMenu.Item onClick={() => store.toggleFollowUser(user?.user_id)}>
-          <button className='text-black'>{user?.following ? 'unfollow' : 'follow'}</button>
+        <DropdownMenu.Item className={`text-black cursor-pointer ${user.blocked && `cursor-not-allowed`}`} disabled={user?.blocked} onClick={() => store.toggleFollowUser(user?.user_id)}>
+          <button className='text-black cursor-pointer'>{user?.following ? 'unfollow' : 'follow'}</button>
         </DropdownMenu.Item>
-        <DropdownMenu.Item onClick={() => store.toggleUserBlock(user?.user_id)}>
-          <button className='text-black'>{user?.blocked ? 'unblock' : 'block'}</button>
+        <DropdownMenu.Item className='text-black cursor-pointer' onClick={() => store.toggleUserBlock(user?.user_id)}>
+          <button>{user?.blocked ? 'unblock' : 'block'}</button>
         </DropdownMenu.Item>
       </DropdownMenu.Content>
     </DropdownMenu.Portal>
