@@ -1,1 +1,3 @@
 - decided to use `users/route.ts` so I can keep the FE & BE layer separate. that file can be deployed in any node env, making it reusable in an env with web, & native mobile
+- exploring local first dev workflow, using repository pattern to persist to indexedDb
+- to keep data fresh, I'm going with a network first approach, as opposed to cache first. If the network request fails, that's when we go for previously loaded data that was saved to indexedDb.
