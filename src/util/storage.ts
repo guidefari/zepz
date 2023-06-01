@@ -56,7 +56,7 @@ class LocalStorage {
   async toggleUserBlock(id: number) {
     const userToPersist = this.getSingleUserDetailsFromStore(id)
     if (!userToPersist) return
-    
+
     this.db?.put(
       'users',
       {
@@ -69,7 +69,7 @@ class LocalStorage {
 
     this.syncStore()
   }
-  
+
   async toggleFollowUser(id: number) {
     const userToPersist = this.getSingleUserDetailsFromStore(id)
     if (!userToPersist) return
@@ -81,8 +81,8 @@ class LocalStorage {
         following: !userToPersist?.following,
       },
       userToPersist.reputation
-      )
-      this.syncStore()
+    )
+    this.syncStore()
   }
 
   getSingleUserDetailsFromStore(id: number): FormattedUser | undefined {
@@ -92,7 +92,6 @@ class LocalStorage {
   async syncStore() {
     this.users = (await this?.db?.getAll('users'))?.reverse()
   }
-
 }
 
 const localStorage = new LocalStorage()
