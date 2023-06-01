@@ -14,7 +14,6 @@ export async function GET(req: NextRequest) {
       sort: 'reputation',
       site: 'stackoverflow',
     })
-  console.log('url:', url)
 
   try {
     const res = await fetch(url)
