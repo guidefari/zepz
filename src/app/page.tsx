@@ -4,8 +4,7 @@ import store from '@/util/storage'
 import { observer } from 'mobx-react'
 
 export default observer(function Home() {
-  // if (isLoading) return <p>Loading...</p>
-  // if (!users) return <p>No profile data</p>
+  if (store.loading) return <div className="container">Loading...</div>
 
   return (
     <main className="relative items-center w-full px-5 py-12 mx-auto md:px-12 lg:px-24 max-w-7xl">
@@ -13,6 +12,7 @@ export default observer(function Home() {
         {store?.users?.map((user) => (
           <UserCard key={user.user_id} user={user} />
         ))}
+        {store?.users.length < 1 && <h2 className="text-centre">No users loaded</h2>}
       </div>
     </main>
   )
