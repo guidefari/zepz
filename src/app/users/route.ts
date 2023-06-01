@@ -6,16 +6,15 @@ export async function GET(req: NextRequest) {
   const pagesize = params.searchParams.get('pagesize') || '20'
 
   const url =
-  'http://api.stackexchange.com/2.2/users?' +
-  new URLSearchParams({
-    pagesize,
-    page,
-    order: 'desc',
-    sort: 'reputation',
-    site: 'stackoverflow',
-  })
-  console.log('url:', url)
-  
+    'http://api.stackexchange.com/2.2/users?' +
+    new URLSearchParams({
+      pagesize,
+      page,
+      order: 'desc',
+      sort: 'reputation',
+      site: 'stackoverflow',
+    })
+
   try {
     const res = await fetch(url)
     const stackoverflowUsers: StackAPIResponse = await res.json()
