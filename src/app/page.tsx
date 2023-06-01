@@ -1,6 +1,6 @@
-"use client"
+'use client'
 import { UserCard } from '@/components/UserCard'
-import store  from '@/util/storage'
+import store from '@/util/storage'
 import { observer } from 'mobx-react'
 
 export default observer(function Home() {
